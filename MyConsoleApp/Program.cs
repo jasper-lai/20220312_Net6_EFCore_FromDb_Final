@@ -57,3 +57,45 @@ void ReadAppSettingsJson()
 
 ReadAppSettingsJson();
 
+// ==============================
+// Null Forgiving Operator 
+// ==============================
+
+void NullForgivingTest1()
+{
+    string x;
+    string? y = null;
+
+    //Warning: CS8600 "Converting null literal or possible null value to non-nullable type"
+    x = y;   
+    Console.WriteLine( ( x is null ) ? "x is null" : "x is not null");
+
+    //雖然 string x 在語意上, 是不允許 null 的; 但仍可將 null! 或變數 y! 指定給 x, 讓編譯器在作靜態分析時, 不會顯示謷告訊息.
+    //[重要] ! 這個運算子, 只是關掉編譯器在 型別系統檢查時的警告, 在執行階段, 其內容值仍然可以是 null.
+    x = y!;  
+    Console.WriteLine( (x is null) ? "x is null" : "x is not null");
+
+    //上述 2 個 Console.WriteLine, 均會顯示 x is null
+}
+
+
+void NullForgivingTest2()
+{
+    var obj0 = new AppInfo();
+    var obj1 = new NullFix1_AppInfo();
+    var obj2 = new NullFix2_AppInfo();
+    var obj3 = new NullFix3_AppInfo();
+    var obj4 = new NullFix4_AppInfo();
+
+    Console.WriteLine((obj0.Name is null) ? "obj0.Name is null" : "obj0.Name is not null");
+    Console.WriteLine((obj1.Name is null) ? "obj1.Name is null" : "obj1.Name is not null");
+    Console.WriteLine((obj2.Name is null) ? "obj2.Name is null" : "obj2.Name is not null");
+    Console.WriteLine((obj3.Name is null) ? "obj3.Name is null" : "obj3.Name is not null");
+    Console.WriteLine((obj4.Name is null) ? "obj4.Name is null" : "obj4.Name is not null");
+
+    //上述 Console.WriteLine, 只有第4個會顯示 "obj4.Name is not null".
+}
+
+NullForgivingTest1();
+NullForgivingTest2();
+
